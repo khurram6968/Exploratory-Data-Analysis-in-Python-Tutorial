@@ -1,0 +1,32 @@
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import os
+from scipy.stats import trim_mean
+data=pd.read_csv("C:\\Users\\MKhurram\\Desktop\\PythonProgramming\\state.csv")
+print("Type:",type(data),"\n\n")
+print("Head--\n",data.head(10))
+print("\n\n Tail--\n",data.tail(10))
+data['PopoluationInMillions']=data['Population']/1000000
+data.describe()
+data.info()
+data.rename(columns={'Murder.Rate':'MurderRate'},inplace=True)
+PopMe=data.Population.mean()
+print('Poulation Mean:',PopMe)
+MurMe=data.MurderRate.mean()
+print('Murder Mean:',MurMe)
+poptrimea=trim_mean(data.Population,0.1)
+e=np.average(data.MurderRate,weights=data.Population)
+fig,ax1=plt.subplots()
+fig.set_size_inches(15,9)
+ax1=sns.barplot(x="State",y="Population",data=data.sort_values('MurderRate'),palette="Set2")
+ax1.set(xlabel="States",ylabel="Population in millions")
+ax1.set_title("Population In Million by States",size=20)
+plt.xticks(rotation=90)
+fig,ax2=plt.subplots()
+fig.set_size_inches(15,9)
+ax2=sns.barplot(x='State',y='MurderRate',data=data.sort_values('MurderRate'),palette='husl')
+ax2.set(xlabel='States',ylabel='Murder Rate')
+ax2.set_title("Murder Rate by State",size=20)
+plt.xticks(rotation=90)
